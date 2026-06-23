@@ -18,7 +18,7 @@ from app.dj_tags import (
     ENERGY_LEVELS,
     MOODS
 )
-
+from app.database import connect
 
 class MainWindow(QWidget):
 
@@ -172,7 +172,17 @@ class MainWindow(QWidget):
         right.addWidget(
             self.mood
         )
+save_button = QPushButton(
+    "SAVE TAGS 💾"
+)
 
+save_button.clicked.connect(
+    self.save_tags
+)
+
+right.addWidget(
+    save_button
+)
 
         main.addLayout(
             left
@@ -222,3 +232,49 @@ class MainWindow(QWidget):
             self.player.play(
                 self.files[row]
             )
+    def save_tags(self):
+
+        row = self.list.currentRow()
+
+        if row < 0:
+            return
+
+
+        file = self.files[row]
+
+
+        db = connect()
+
+        cursor = db.cursor()
+
+
+        cursor.execute(
+            """
+            INSERT INTO tracks
+            (
+                file,
+                rating,
+                color,
+                event,
+                energy,
+                mood
+            )
+
+            VALUES
+            (?, ?, ?, ?, ?, ?)
+            """,
+
+            (
+                file,
+                int(self.rating.currentText()),
+                self.color.currentText(),
+                self.event.currentText(),
+                self.energy.currentText(),
+                self.mood.currentText()
+            )
+        )
+
+
+        db.commit()
+
+        db.close()
