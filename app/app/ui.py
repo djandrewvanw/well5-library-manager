@@ -3,12 +3,21 @@ import os
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
+    QHBoxLayout,
     QPushButton,
     QListWidget,
-    QFileDialog
+    QFileDialog,
+    QLabel,
+    QComboBox
 )
 
 from app.player import Player
+from app.dj_tags import (
+    DJ_COLORS,
+    EVENT_TYPES,
+    ENERGY_LEVELS,
+    MOODS
+)
 
 
 class MainWindow(QWidget):
@@ -22,53 +31,162 @@ class MainWindow(QWidget):
         )
 
         self.resize(
-            900,
+            1000,
             600
         )
+
 
         self.player = Player()
 
         self.files = []
 
-        layout = QVBoxLayout()
+
+        main = QHBoxLayout()
+
+
+        # LEWA STRONA - MUZYKA
+
+        left = QVBoxLayout()
 
 
         self.list = QListWidget()
 
-        layout.addWidget(
+        left.addWidget(
             self.list
         )
 
 
-        button = QPushButton(
+        import_button = QPushButton(
             "Import MP3 Folder"
         )
 
-        button.clicked.connect(
+        import_button.clicked.connect(
             self.load_folder
         )
 
-        layout.addWidget(
-            button
+        left.addWidget(
+            import_button
         )
 
 
-        play = QPushButton(
+        play_button = QPushButton(
             "PLAY"
         )
 
-        play.clicked.connect(
+        play_button.clicked.connect(
             self.play
         )
 
-        layout.addWidget(
-            play
+        left.addWidget(
+            play_button
+        )
+
+
+        # PRAWA STRONA - TAGI
+
+        right = QVBoxLayout()
+
+
+        right.addWidget(
+            QLabel("Rating ⭐")
+        )
+
+
+        self.rating = QComboBox()
+
+        self.rating.addItems(
+            [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+            ]
+        )
+
+        right.addWidget(
+            self.rating
+        )
+
+
+        right.addWidget(
+            QLabel("Color 🎨")
+        )
+
+
+        self.color = QComboBox()
+
+        self.color.addItems(
+            DJ_COLORS
+        )
+
+        right.addWidget(
+            self.color
+        )
+
+
+        right.addWidget(
+            QLabel("Event Type 🏷")
+        )
+
+
+        self.event = QComboBox()
+
+        self.event.addItems(
+            EVENT_TYPES
+        )
+
+        right.addWidget(
+            self.event
+        )
+
+
+        right.addWidget(
+            QLabel("Energy ⚡")
+        )
+
+
+        self.energy = QComboBox()
+
+        self.energy.addItems(
+            ENERGY_LEVELS
+        )
+
+        right.addWidget(
+            self.energy
+        )
+
+
+        right.addWidget(
+            QLabel("Mood 😎")
+        )
+
+
+        self.mood = QComboBox()
+
+        self.mood.addItems(
+            MOODS
+        )
+
+        right.addWidget(
+            self.mood
+        )
+
+
+        main.addLayout(
+            left
+        )
+
+        main.addLayout(
+            right
         )
 
 
         self.setLayout(
-            layout
+            main
         )
+
 
 
     def load_folder(self):
@@ -92,6 +210,7 @@ class MainWindow(QWidget):
                 self.list.addItem(
                     file
                 )
+
 
 
     def play(self):
