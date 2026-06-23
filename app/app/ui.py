@@ -16,7 +16,7 @@ QTableWidgetItem
 
 from app.player import Player
 from app.analyzer import analyze_track
-from app.tags import save_cover
+from app.tags import save_cover, save_dj_tags, save_rating
 from app.dj_tags import (
     DJ_COLORS,
     EVENT_TYPES,
@@ -356,7 +356,19 @@ self.table.setItem(
 
 
         db.commit()
+        save_rating(
+            file,
+            int(self.rating.currentText())
+        )
 
+
+        save_dj_tags(
+            file,
+            self.color.currentText(),
+            self.event.currentText(),
+            self.energy.currentText(),
+            self.mood.currentText()
+        )
         db.close()
     def add_cover(self):
 
