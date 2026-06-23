@@ -3,7 +3,14 @@ from mutagen.id3 import ID3, POPM, APIC
 
 def save_rating(file, rating):
 
-    audio = ID3(file)
+    try:
+
+        audio = ID3(file)
+
+    except:
+
+        audio = ID3()
+
 
     audio.add(
         POPM(
@@ -13,13 +20,21 @@ def save_rating(file, rating):
         )
     )
 
+
     audio.save()
 
 
 
 def save_cover(file, image):
 
-    audio = ID3(file)
+    try:
+
+        audio = ID3(file)
+
+    except:
+
+        audio = ID3()
+
 
     with open(image, "rb") as img:
 
@@ -32,5 +47,6 @@ def save_cover(file, image):
                 data=img.read()
             )
         )
+
 
     audio.save()
