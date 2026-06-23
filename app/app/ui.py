@@ -8,7 +8,10 @@ from PySide6.QtWidgets import (
     QListWidget,
     QFileDialog,
     QLabel,
-    QComboBox
+    QComboBox,
+QTableWidget,
+QTableWidgetItem
+)
 )
 
 from app.player import Player
@@ -51,7 +54,22 @@ class MainWindow(QWidget):
 
 
         self.list = QListWidget()
+self.table = QTableWidget()
 
+self.table.setColumnCount(4)
+
+self.table.setHorizontalHeaderLabels(
+    [
+        "Track",
+        "Rating",
+        "Color",
+        "Event"
+    ]
+)
+
+left.addWidget(
+    self.table
+)
         left.addWidget(
             self.list
         )
@@ -231,7 +249,37 @@ right.addWidget(
                 self.list.addItem(
                     file
                 )
+row = self.table.rowCount()
 
+self.table.insertRow(row)
+
+
+self.table.setItem(
+    row,
+    0,
+    QTableWidgetItem(file)
+)
+
+
+self.table.setItem(
+    row,
+    1,
+    QTableWidgetItem("⭐")
+)
+
+
+self.table.setItem(
+    row,
+    2,
+    QTableWidgetItem("")
+)
+
+
+self.table.setItem(
+    row,
+    3,
+    QTableWidgetItem("")
+)
 
 
     def play(self):
