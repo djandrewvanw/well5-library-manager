@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
 )
 
 from app.player import Player
+from app.tags import save_cover
 from app.dj_tags import (
     DJ_COLORS,
     EVENT_TYPES,
@@ -175,7 +176,17 @@ class MainWindow(QWidget):
 save_button = QPushButton(
     "SAVE TAGS 💾"
 )
+cover_button = QPushButton(
+    "ADD COVER 💿"
+)
 
+cover_button.clicked.connect(
+    self.add_cover
+)
+
+right.addWidget(
+    cover_button
+)
 save_button.clicked.connect(
     self.save_tags
 )
@@ -278,3 +289,25 @@ right.addWidget(
         db.commit()
 
         db.close()
+    def add_cover(self):
+
+        row = self.list.currentRow()
+
+        if row < 0:
+            return
+
+
+        image, _ = QFileDialog.getOpenFileName(
+            self,
+            "Choose Cover",
+            "",
+            "Images (*.jpg *.png)"
+        )
+
+
+        if image:
+
+            save_cover(
+                self.files[row],
+                image
+            )
