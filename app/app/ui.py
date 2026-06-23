@@ -15,6 +15,7 @@ QTableWidgetItem
 )
 
 from app.player import Player
+from app.analyzer import analyze_track
 from app.tags import save_cover
 from app.dj_tags import (
     DJ_COLORS,
@@ -191,6 +192,26 @@ left.addWidget(
         right.addWidget(
             self.mood
         )
+self.bpm_label = QLabel(
+    "BPM: ---"
+)
+
+right.addWidget(
+    self.bpm_label
+)
+
+
+analyze_button = QPushButton(
+    "ANALYZE TRACK 🎧"
+)
+
+analyze_button.clicked.connect(
+    self.analyze
+)
+
+right.addWidget(
+    analyze_button
+)
 save_button = QPushButton(
     "SAVE TAGS 💾"
 )
@@ -359,3 +380,20 @@ self.table.setItem(
                 self.files[row],
                 image
             )
+    def analyze(self):
+
+        row = self.list.currentRow()
+
+
+        if row < 0:
+            return
+
+
+        result = analyze_track(
+            self.files[row]
+        )
+
+
+        self.bpm_label.setText(
+            f"BPM: {result['bpm']}"
+        )
