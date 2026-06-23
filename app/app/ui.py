@@ -19,14 +19,14 @@ from app.dj_tags import (
     ENERGY_LEVELS,
     MOODS
 )
-from app.database import connect
+from app.database import connect, create_database
 
 class MainWindow(QWidget):
 
     def __init__(self):
 
         super().__init__()
-
+        create_database()
         self.setWindowTitle(
             "Well5 Library Manager"
         )
